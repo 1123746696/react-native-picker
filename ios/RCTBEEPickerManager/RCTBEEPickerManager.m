@@ -69,7 +69,20 @@ RCT_EXPORT_METHOD(_init:(NSDictionary *)indic){
         self.height=220;
     }
     
-    self.pick=[[BzwPicker alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, self.height) dic:dataDic leftStr:pickerCancelBtnText centerStr:pickerTitleText rightStr:pickerConfirmBtnText topbgColor:pickerToolBarBg bottombgColor:pickerBg leftbtnbgColor:pickerCancelBtnColor rightbtnbgColor:pickerConfirmBtnColor centerbtnColor:pickerTitleColor selectValueArry:selectArry weightArry:weightArry pickerToolBarFontSize:pickerToolBarFontSize pickerFontSize:pickerFontSize pickerFontColor:pickerFontColor];
+    self.pick=[[BzwPicker alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, self.height) dic:dataDic
+                                      leftStr:pickerCancelBtnText
+                                    centerStr:pickerTitleText
+                                     rightStr:pickerConfirmBtnText
+                                   topbgColor:pickerToolBarBg
+                                bottombgColor:pickerBg
+                               leftbtnbgColor:pickerCancelBtnColor
+                              rightbtnbgColor:pickerConfirmBtnColor
+                               centerbtnColor:pickerTitleColor
+                              selectValueArry:selectArry
+                                   weightArry:weightArry
+                        pickerToolBarFontSize:pickerToolBarFontSize
+                               pickerFontSize:pickerFontSize
+                              pickerFontColor:pickerFontColor];
     
     
     _pick.bolock=^(NSDictionary *backinfoArry){
@@ -83,6 +96,13 @@ RCT_EXPORT_METHOD(_init:(NSDictionary *)indic){
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [self.window addSubview:_pick];
+        
+        [UIView animateWithDuration:.3 animations:^{
+            
+            [_pick setFrame:CGRectMake(0, SCREEN_HEIGHT-self.height, SCREEN_WIDTH, self.height)];
+            
+        }];
+        
     });
     
 }

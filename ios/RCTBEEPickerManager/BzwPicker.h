@@ -24,9 +24,6 @@ typedef void(^backBolock)(NSDictionary * );
 
 @property(strong,nonatomic)NSArray *dataDry;//一进来的就没有数组和字典的区别肯定是一个字典
 
-@property (strong, nonatomic) NSMutableArray *provinceArray;//省、市
-@property (strong, nonatomic) NSMutableArray *cityArray;//市，县
-@property (strong, nonatomic) NSArray *townArray;//县，区
 
 
 @property(strong,nonatomic)NSArray *selectthreeAry;
@@ -47,7 +44,6 @@ typedef void(^backBolock)(NSDictionary * );
 
 @property(assign,nonatomic)BOOL Correlation;//判断有没有没有关联
 
-@property(nonatomic,strong)NSString *numberCorrela;//关联是2行 还是3行
 
 @property(nonatomic,strong)NSArray *noCorreArry;
 
@@ -74,6 +70,7 @@ typedef void(^backBolock)(NSDictionary * );
 @property(assign,nonatomic)NSInteger threenum;
 
 @property(assign,nonatomic)NSInteger seleNum;//用来做索引下标用
+
 
 
 
