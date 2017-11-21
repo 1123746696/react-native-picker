@@ -6,14 +6,17 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.beefe.picker.util.MIUIUtils;
+import com.beefe.picker.view.LoopView;
+import com.beefe.picker.view.NewPickerViewLinkage;
 import com.beefe.picker.view.OnSelectedListener;
 import com.beefe.picker.view.PickerViewAlone;
 import com.beefe.picker.view.PickerViewLinkage;
@@ -123,7 +126,7 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
 
     private int curStatus;
 
-    private PickerViewLinkage pickerViewLinkage;
+    private NewPickerViewLinkage pickerViewLinkage;
     private PickerViewAlone pickerViewAlone;
 
     public PickerViewModule(ReactApplicationContext reactContext) {
@@ -146,7 +149,15 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
             TextView titleTV = (TextView) view.findViewById(R.id.title);
             TextView confirmTV = (TextView) view.findViewById(R.id.confirm);
             RelativeLayout pickerLayout = (RelativeLayout) view.findViewById(R.id.pickerLayout);
-            pickerViewLinkage = (PickerViewLinkage) view.findViewById(R.id.pickerViewLinkage);
+
+            //pickerViewLinkage = (NewPickerViewLinkage) view.findViewById(R.id.pickerViewLinkage);
+
+           RelativeLayout.LayoutParams prams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                   RelativeLayout.LayoutParams.WRAP_CONTENT);
+            pickerViewLinkage =new NewPickerViewLinkage(activity);
+            pickerViewLinkage.setLayoutParams(prams);
+            pickerLayout.addView(pickerViewLinkage);
+
             pickerViewAlone = (PickerViewAlone) view.findViewById(R.id.pickerViewAlone);
 
             int barViewHeight;
@@ -295,7 +306,7 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
                     pickerViewLinkage.setVisibility(View.VISIBLE);
                     pickerViewAlone.setVisibility(View.GONE);
 
-                    pickerViewLinkage.setPickerData(pickerData, weights);
+                    pickerViewLinkage.setPickerData(pickerData, weights,activity,pickerLayout);
                     pickerViewLinkage.setTextColor(pickerTextColor);
                     pickerViewLinkage.setTextSize(pickerTextSize);
                     pickerViewLinkage.setIsLoop(isLoop);
@@ -350,12 +361,8 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
                 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                 Window window = dialog.getWindow();
                 if (window != null) {
-                    if (MIUIUtils.isMIUI()) {
-                        layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION;
-                    }else {
-                        //layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
-                    }
                     layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+                    layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
                     layoutParams.format = PixelFormat.TRANSPARENT;
                     layoutParams.windowAnimations = R.style.PickerAnim;
                     layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
