@@ -6,16 +6,13 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.beefe.picker.view.LoopView;
 import com.beefe.picker.view.NewPickerViewLinkage;
 import com.beefe.picker.view.OnSelectedListener;
 import com.beefe.picker.view.PickerViewAlone;
@@ -149,11 +146,10 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
             TextView titleTV = (TextView) view.findViewById(R.id.title);
             TextView confirmTV = (TextView) view.findViewById(R.id.confirm);
             RelativeLayout pickerLayout = (RelativeLayout) view.findViewById(R.id.pickerLayout);
+           // pickerViewLinkage = (PickerViewLinkage) view.findViewById(R.id.pickerViewLinkage);
 
-            //pickerViewLinkage = (NewPickerViewLinkage) view.findViewById(R.id.pickerViewLinkage);
-
-           RelativeLayout.LayoutParams prams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                   RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayout.LayoutParams prams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
             pickerViewLinkage =new NewPickerViewLinkage(activity);
             pickerViewLinkage.setLayoutParams(prams);
             pickerLayout.addView(pickerViewLinkage);
@@ -362,7 +358,6 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
                 Window window = dialog.getWindow();
                 if (window != null) {
                     layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-                    layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
                     layoutParams.format = PixelFormat.TRANSPARENT;
                     layoutParams.windowAnimations = R.style.PickerAnim;
                     layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
@@ -509,7 +504,6 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
 
     @Override
     public void onHostDestroy() {
-        hide();
-        dialog = null;
+
     }
 }

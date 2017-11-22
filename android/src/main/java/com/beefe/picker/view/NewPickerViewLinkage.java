@@ -43,8 +43,8 @@ public class NewPickerViewLinkage extends LinearLayout {
      * @param context
      */
     private void init(Context context) {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT);
         lineLayout = new LinearLayout(context);
         lineLayout.setOrientation(LinearLayout.HORIZONTAL);
         lineLayout.setLayoutParams(params);
@@ -69,7 +69,7 @@ public class NewPickerViewLinkage extends LinearLayout {
      * @param context
      * @param pickerLayout
      */
-    public void setPickerData(ReadableArray array, double[] weights,Context context,RelativeLayout pickerLayout) {
+    public void setPickerData(ReadableArray array, double[] weights, Context context, RelativeLayout pickerLayout) {
         this.data=array;
         curSelectedList = new ArrayList<>();
         ReadableMap map0 = array.getMap(0);
@@ -84,8 +84,8 @@ public class NewPickerViewLinkage extends LinearLayout {
         for(int i=0;i<depth;i++) {
             final int curRow=i;
             LoopView loopView = new LoopView(context);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
+            LayoutParams layoutParams = new LayoutParams(0,
+                    LayoutParams.MATCH_PARENT);
             if (weights != null) {
                 layoutParams.weight = (float)weights[i];
             }
