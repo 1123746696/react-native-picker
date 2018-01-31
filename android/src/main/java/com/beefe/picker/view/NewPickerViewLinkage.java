@@ -99,6 +99,7 @@ public class NewPickerViewLinkage extends LinearLayout {
             ReturnData returnData = new ReturnData();
             returnData.setItem(list.get(0));
             returnData.setIndex(loopView.getSelectedIndex());
+            //returnData.setIndex(0);
             if (curSelectedList.size() > i) {
                 curSelectedList.set(i, returnData);
             } else {
@@ -187,6 +188,10 @@ public class NewPickerViewLinkage extends LinearLayout {
                     curArray=map.getArray(value);
                 }
             }
+            ReturnData returnData = new ReturnData();
+            returnData.setItem(list.get(0));
+            returnData.setIndex(0);
+            curSelectedList.set(j, returnData);
         }
 
     }
