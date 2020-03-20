@@ -21,6 +21,10 @@ public class PickerViewPackage implements ReactPackage {
         return Arrays.<NativeModule>asList(new PickerViewModule(reactContext));
     }
 
+    // Deprecated RN 0.47
+    public List<Class<? extends JavaScriptModule>> createJSModules() {
+        return  Collections.emptyList();
+    }
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {

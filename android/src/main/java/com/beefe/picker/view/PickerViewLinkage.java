@@ -1,6 +1,7 @@
 package com.beefe.picker.view;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -190,12 +191,15 @@ public class PickerViewLinkage extends LinearLayout {
             threeList.clear();
             threeList = arrayToList(sunArray);
             checkItems(loopViewThree, threeList);
-            returnData2.setItem(threeList.get(0));
-            returnData2.setIndex(loopViewThree.getSelectedIndex());
-            if (curSelectedList.size() > 2) {
-                curSelectedList.set(2, returnData2);
-            } else {
-                curSelectedList.add(2, returnData2);
+
+            if(threeList!=null&&threeList.size()>0){
+                returnData2.setItem(threeList.get(0));
+                returnData2.setIndex(loopViewThree.getSelectedIndex());
+                if (curSelectedList.size() > 2) {
+                    curSelectedList.set(2, returnData2);
+                } else {
+                    curSelectedList.add(2, returnData2);
+                }
             }
 
             loopViewOne.setListener(new OnItemSelectedListener() {
@@ -230,13 +234,16 @@ public class PickerViewLinkage extends LinearLayout {
                     threeList = arrayToList(sunArray);
                     checkItems(loopViewThree, threeList);
                     returnData2 = new ReturnData();
-                    returnData2.setItem(threeList.get(0));
-                    returnData2.setIndex(loopViewThree.getSelectedIndex());
-                    curSelectedList.set(2, returnData2);
 
-                    if (onSelectedListener != null) {
-                        onSelectedListener.onSelected(curSelectedList);
+                    if (threeList!=null&&threeList.size()>0){
+                        returnData2.setItem(threeList.get(0));
+                        returnData2.setIndex(loopViewThree.getSelectedIndex());
+                        curSelectedList.set(2, returnData2);
+                        if (onSelectedListener != null) {
+                            onSelectedListener.onSelected(curSelectedList);
+                        }
                     }
+
                 }
             });
 
@@ -246,6 +253,12 @@ public class PickerViewLinkage extends LinearLayout {
                     selectTwoIndex = index;
 
                     ReadableArray arr = data.get(selectOneIndex).getArray(oneList.get(selectOneIndex));
+                    int arrSize = arr.size();
+                    //fix IndexOutOfBoundsException
+                    //by zooble @2018-1-10
+                    if(index > arrSize){
+                        index = arrSize - 1;
+                    }
                     ReadableMap childMap = arr.getMap(index);
                     String key = childMap.keySetIterator().nextKey();
                     ReadableArray sunArray = childMap.getArray(key);
@@ -264,18 +277,35 @@ public class PickerViewLinkage extends LinearLayout {
                     curSelectedList.set(1, returnData1);
 
                     returnData2 = new ReturnData();
-                    returnData2.setItem(threeList.get(0));
-                    returnData2.setIndex(loopViewThree.getSelectedIndex());
-                    curSelectedList.set(2, returnData2);
-                    if (onSelectedListener != null) {
-                        onSelectedListener.onSelected(curSelectedList);
+
+                    if (threeList!=null&&threeList.size()>0){
+                        returnData2.setItem(threeList.get(0));
+                        returnData2.setIndex(loopViewThree.getSelectedIndex());
+                        curSelectedList.set(2, returnData2);
+                        if (onSelectedListener != null) {
+                            onSelectedListener.onSelected(curSelectedList);
+                        }
+
                     }
+
+
                 }
             });
 
             loopViewThree.setListener(new OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(String item, int index) {
+                    //fix IndexOutOfBoundsException
+                    //by zooble @2018-1-10
+                    int arrOneSize = oneList.size();
+                    if(selectOneIndex >= arrOneSize){
+                        selectOneIndex = arrOneSize - 1;
+                    }
+                    int arrTwoSize = twoList.size();
+                    if(selectTwoIndex >= arrTwoSize){
+                        selectTwoIndex = arrTwoSize - 1;
+                    }
+                    
                     returnData = new ReturnData();
                     returnData.setItem(oneList.get(selectOneIndex));
                     returnData.setIndex(loopViewOne.getSelectedIndex());
@@ -570,6 +600,34 @@ public class PickerViewLinkage extends LinearLayout {
                 loopViewOne.setTextSize(size);
                 loopViewTwo.setTextSize(size);
                 loopViewThree.setTextSize(size);
+                break;
+        }
+    }
+
+    public void setTypeface(Typeface typeface){
+        switch (curRow) {
+            case 2:
+                loopViewOne.setTypeface(typeface);
+                loopViewTwo.setTypeface(typeface);
+                break;
+            case 3:
+                loopViewOne.setTypeface(typeface);
+                loopViewTwo.setTypeface(typeface);
+                loopViewThree.setTypeface(typeface);
+                break;
+        }
+    }
+
+    public void setTextEllipsisLen(int len){
+        switch (curRow) {
+            case 2:
+                loopViewOne.setTextEllipsisLen(len);
+                loopViewTwo.setTextEllipsisLen(len);
+                break;
+            case 3:
+                loopViewOne.setTextEllipsisLen(len);
+                loopViewTwo.setTextEllipsisLen(len);
+                loopViewThree.setTextEllipsisLen(len);
                 break;
         }
     }

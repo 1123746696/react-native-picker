@@ -9,43 +9,47 @@
 
 #### Params
 
-|Key | Description | Type | Default|
-| --- | ----------- | ---- | ------ |
-|pickerConfirmBtnText  |            |string  |confirm            |
-|pickerCancelBtnText   |            |string  |cancel             |
-|pickerTitleText       |            |string  |pls select         |
-|pickerConfirmBtnColor |            |array   |[1, 186, 245, 1]   |
-|pickerCancelBtnColor  |            |array   |[1, 186, 245, 1]   |
-|pickerTitleColor      |            |array   |[20, 20, 20, 1]    |
-|pickerToolBarBg       |            |array   |[232, 232, 232, 1] |
-|pickerBg              |            |array   |[196, 199, 206, 1] |
-|pickerToolBarFontSize |            |number  |16                 |
-|wheelFlex             |            |array   |[1, 1, 1]          |
-|pickerFontSize        |            |number  |16                 |
-|pickerFontColor       |            |array   |[31, 31, 31, 1]    |
-|pickerData            |            |array   |                   |
-|selectedValue         |            |array   |                   |
-|onPickerConfirm       |            |function|                   |
-|onPickerCancel        |            |function|                   |
-|onPickerSelect        |            |function|                   |
+|Key | Type | Default| Support | Description |
+| --- | --- | ---- | ------ | ----------- |
+|isLoop                | Boolean | false              |     Android  |   |
+|pickerTextEllipsisLen | number  | 6                  |     Android  |   |
+|pickerConfirmBtnText  | string  | confirm            | iOS/Android  |   |
+|pickerCancelBtnText   | string  | cancel             | iOS/Android  |   |
+|pickerTitleText       | string  | pls select         | iOS/Android  |   |
+|pickerConfirmBtnColor | array   | [1, 186, 245, 1]   | iOS/Android  |   |
+|pickerCancelBtnColor  | array   | [1, 186, 245, 1]   | iOS/Android  |   |
+|pickerTitleColor      | array   | [20, 20, 20, 1]    | iOS/Android  |   |
+|pickerToolBarBg       | array   | [232, 232, 232, 1] | iOS/Android  |   |
+|pickerBg              | array   | [196, 199, 206, 1] | iOS/Android  |   |
+|pickerToolBarFontSize | number  | 16                 | iOS/Android  |   |
+|wheelFlex             | array   | [1, 1, 1]          | iOS/Android  |   |
+|pickerFontSize        | number  | 16                 | iOS/Android  |   |
+|pickerFontColor       | array   | [31, 31, 31, 1]    | iOS/Android  |   |
+|pickerFontFamily      | string  |                    | iOS/Android  |   |
+|pickerRowHeight       | number  | 24                 | iOS          |   |
+|pickerData            | array   |                    | iOS/Android  |   |
+|selectedValue         | array   |                    | iOS/Android  |   |
+|onPickerConfirm       | function|                    | iOS/Android  |   |
+|onPickerCancel        | function|                    | iOS/Android  |   |
+|onPickerSelect        | function|                    | iOS/Android  |   |
 
 #### Methods
 
-|Name | Description | Type | Default|
-| --- | ----------- | ---- | ------ |
-|init         |init and pass parameters to picker      |     |   |
-|toggle       |show or hide picker                     |     |   |
-|show         |show picker                             |     |   |
-|hide         |hide picker                             |     |   |
-|select       |select a row                            |array|   |
-|isPickerShow |get status of picker, return a boolean  |     |   |
+|Key | Support | Description |
+| --- | ---- | ----------- |
+|init         | iOS/Android |init and pass parameters to picker      |
+|toggle       | iOS/Android |show or hide picker                     |
+|show         | iOS/Android |show picker                             |
+|hide         | iOS/Android |hide picker                             |
+|select       | iOS/Android |select a row                            |
+|isPickerShow | iOS/Android |get status of picker, return a boolean  |
 
 
 ### Usage
 
 #### Step 1 - install
 
-```
+```javascript
 	npm install react-native-picker --save
 ```
 
@@ -58,26 +62,26 @@
 #### Step 3 - import and use in project
 
 ```javascript
-    import Picker from 'react-native-picker';
-    let data = [];
-    for(var i=0;i<100;i++){
-        data.push(i);
-    }
+import Picker from 'react-native-picker';
+let data = [];
+for(var i=0;i<100;i++){
+    data.push(i);
+}
 
-    Picker.init({
-        pickerData: data,
-        selectedValue: [59],
-        onPickerConfirm: data => {
-            console.log(data);
-        },
-        onPickerCancel: data => {
-            console.log(data);
-        },
-        onPickerSelect: data => {
-            console.log(data);
-        }
-    });
-    Picker.show();
+Picker.init({
+    pickerData: data,
+    selectedValue: [59],
+    onPickerConfirm: data => {
+        console.log(data);
+    },
+    onPickerCancel: data => {
+        console.log(data);
+    },
+    onPickerSelect: data => {
+        console.log(data);
+    }
+});
+Picker.show();
 	
 ```
 
@@ -111,19 +115,19 @@ $ pod install
 - single wheel:
 
 ```javascript
-	pickerData = [1,2,3,4];
-	selectedValue = 3;
+pickerData = [1,2,3,4];
+selectedValue = 3;
 ```
 
 - two or more wheel:
 
 ```javascript
-	pickerData = [
-		[1,2,3,4],
-		[5,6,7,8],
-		...
-	];
-	selectedValue = [1, 5];
+pickerData = [
+    [1,2,3,4],
+    [5,6,7,8],
+    ...
+];
+selectedValue = [1, 5];
 ```
 
 #### cascade:
@@ -131,63 +135,63 @@ $ pod install
 - two wheel
 
 ```javascript
-    pickerData = [
-        {
-            a: [1, 2, 3, 4]
-        },
-        {
-            b: [5, 6, 7, 8]
-        },
-        ...
-    ];
-    selectedValue = ['a', 2];
+pickerData = [
+    {
+        a: [1, 2, 3, 4]
+    },
+    {
+        b: [5, 6, 7, 8]
+    },
+    ...
+];
+selectedValue = ['a', 2];
 ```
 
 - three wheel
 
 ```javascript
-    pickerData = [
-        {
-            a: [
-                {
-                    a1: [1, 2, 3, 4]
-                },
-                {
-                    a2: [5, 6, 7, 8]
-                },
-                {
-                    a3: [9, 10, 11, 12]
-                }
-            ]
-        },
-        {
-            b: [
-                {
-                    b1: [11, 22, 33, 44]
-                },
-                {
-                    b2: [55, 66, 77, 88]
-                },
-                {
-                    b3: [99, 1010, 1111, 1212]
-                }
-            ]
-        },
-        {
-            c: [
-                {
-                    c1: ['a', 'b', 'c']
-                },
-                {
-                    c2: ['aa', 'bb', 'cc']
-                },
-                {
-                    c3: ['aaa', 'bbb', 'ccc']
-                }
-            ]
-        },
-        ...
-    ]
+pickerData = [
+    {
+        a: [
+            {
+                a1: [1, 2, 3, 4]
+            },
+            {
+                a2: [5, 6, 7, 8]
+            },
+            {
+                a3: [9, 10, 11, 12]
+            }
+        ]
+    },
+    {
+        b: [
+            {
+                b1: [11, 22, 33, 44]
+            },
+            {
+                b2: [55, 66, 77, 88]
+            },
+            {
+                b3: [99, 1010, 1111, 1212]
+            }
+        ]
+    },
+    {
+        c: [
+            {
+                c1: ['a', 'b', 'c']
+            },
+            {
+                c2: ['aa', 'bb', 'cc']
+            },
+            {
+                c3: ['aaa', 'bbb', 'ccc']
+            }
+        ]
+    },
+    ...
+]
 ```
 
-### For pure javascript version -> [v3.0.5](https://github.com/beefe/react-native-picker/tree/pure-javascript-version)
+### For pure javascript version -> [v3.0.5](https://github.com/beefe/react-native-picker/tree/pure-javascript-version)  

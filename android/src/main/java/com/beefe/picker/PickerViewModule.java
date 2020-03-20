@@ -2,9 +2,11 @@ package com.beefe.picker;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.support.annotation.Nullable;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -13,7 +15,9 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.beefe.picker.view.NewPickerViewLinkage;
+import androidx.annotation.Nullable;
+
+import com.beefe.picker.util.MIUIUtils;
 import com.beefe.picker.view.OnSelectedListener;
 import com.beefe.picker.view.PickerViewAlone;
 import com.beefe.picker.view.PickerViewLinkage;
@@ -74,6 +78,10 @@ import static android.graphics.Color.argb;
  */
 
 public class PickerViewModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
+    
+    private static final String FONTS = "fonts/";
+    private static final String OTF = ".otf";
+    private static final String TTF = ".ttf";
 
     private static final String REACT_CLASS = "BEEPickerManager";
 
@@ -101,6 +109,9 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
 
     private static final String PICKER_TEXT_COLOR = "pickerFontColor";
     private static final String PICKER_TEXT_SIZE = "pickerFontSize";
+    private static final String PICKER_TEXT_ELLIPSIS_LEN = "pickerTextEllipsisLen";
+
+    private static final String PICKER_FONT_FAMILY = "pickerFontFamily";
 
     private static final String PICKER_EVENT_NAME = "pickerEvent";
     private static final String EVENT_KEY_CONFIRM = "confirm";
@@ -116,6 +127,7 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
     private String confirmText;
     private String cancelText;
     private String titleText;
+    private int pickerTextEllipsisLen;
 
     private double[] weights;
 
@@ -123,7 +135,7 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
 
     private int curStatus;
 
-    private NewPickerViewLinkage pickerViewLinkage;
+    private PickerViewLinkage pickerViewLinkage;
     private PickerViewAlone pickerViewAlone;
 
     public PickerViewModule(ReactApplicationContext reactContext) {
@@ -146,14 +158,7 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
             TextView titleTV = (TextView) view.findViewById(R.id.title);
             TextView confirmTV = (TextView) view.findViewById(R.id.confirm);
             RelativeLayout pickerLayout = (RelativeLayout) view.findViewById(R.id.pickerLayout);
-           // pickerViewLinkage = (PickerViewLinkage) view.findViewById(R.id.pickerViewLinkage);
-
-            RelativeLayout.LayoutParams prams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT);
-            pickerViewLinkage =new NewPickerViewLinkage(activity);
-            pickerViewLinkage.setLayoutParams(prams);
-            pickerLayout.addView(pickerViewLinkage);
-
+            pickerViewLinkage = (PickerViewLinkage) view.findViewById(R.id.pickerViewLinkage);
             pickerViewAlone = (PickerViewAlone) view.findViewById(R.id.pickerViewAlone);
 
             int barViewHeight;
@@ -246,6 +251,10 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
                 }
             });
 
+            if(options.hasKey(PICKER_TEXT_ELLIPSIS_LEN)){
+                pickerTextEllipsisLen = options.getInt(PICKER_TEXT_ELLIPSIS_LEN);
+            }
+
             if (options.hasKey(IS_LOOP)) {
                 isLoop = options.getBoolean(IS_LOOP);
             }
@@ -302,9 +311,10 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
                     pickerViewLinkage.setVisibility(View.VISIBLE);
                     pickerViewAlone.setVisibility(View.GONE);
 
-                    pickerViewLinkage.setPickerData(pickerData, weights,activity,pickerLayout);
+                    pickerViewLinkage.setPickerData(pickerData, weights);
                     pickerViewLinkage.setTextColor(pickerTextColor);
                     pickerViewLinkage.setTextSize(pickerTextSize);
+                    pickerViewLinkage.setTextEllipsisLen(pickerTextEllipsisLen);
                     pickerViewLinkage.setIsLoop(isLoop);
 
                     pickerViewLinkage.setOnSelectListener(new OnSelectedListener() {
@@ -324,6 +334,7 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
                     pickerViewAlone.setPickerData(pickerData, weights);
                     pickerViewAlone.setTextColor(pickerTextColor);
                     pickerViewAlone.setTextSize(pickerTextSize);
+                    pickerViewAlone.setTextEllipsisLen(pickerTextEllipsisLen);
                     pickerViewAlone.setIsLoop(isLoop);
 
                     pickerViewAlone.setOnSelectedListener(new OnSelectedListener() {
@@ -336,6 +347,32 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
 
                     pickerViewHeight = pickerViewAlone.getViewHeight();
                     break;
+            }
+
+            if (options.hasKey(PICKER_FONT_FAMILY)) {
+                Typeface typeface = null;
+                AssetManager assetManager = activity.getApplicationContext().getAssets();
+                final String fontFamily = options.getString(PICKER_FONT_FAMILY);
+                try {
+                    String path = FONTS + fontFamily + TTF;
+                    typeface = Typeface.createFromAsset(assetManager, path);
+                } catch (Exception ignored) {
+                    try {
+                        String path = FONTS + fontFamily + OTF;
+                        typeface = Typeface.createFromAsset(assetManager, path);
+                    } catch (Exception ignored2) {
+                        try {
+                            typeface = Typeface.create(fontFamily, Typeface.NORMAL);
+                        } catch (Exception ignored3) {
+                        }
+                    }
+                }
+                cancelTV.setTypeface(typeface);
+                titleTV.setTypeface(typeface);
+                confirmTV.setTypeface(typeface);
+
+                pickerViewAlone.setTypeface(typeface);
+                pickerViewLinkage.setTypeface(typeface);
             }
 
             if (options.hasKey(SELECTED_VALUE)) {
@@ -357,13 +394,22 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
                 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                 Window window = dialog.getWindow();
                 if (window != null) {
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    }else{
+                        if (MIUIUtils.isMIUI()) {
+                            layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION;
+                        }else {
+                            //layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+                        }
+                    }
                     layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
                     layoutParams.format = PixelFormat.TRANSPARENT;
                     layoutParams.windowAnimations = R.style.PickerAnim;
                     layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
                     layoutParams.height = height;
                     layoutParams.gravity = Gravity.BOTTOM;
-                    window.setAttributes(layoutParams);
+                    window.setAttributes(layoutParams);   
                 }
             } else {
                 dialog.dismiss();
@@ -504,6 +550,7 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
 
     @Override
     public void onHostDestroy() {
-
+        hide();
+        dialog = null;
     }
 }

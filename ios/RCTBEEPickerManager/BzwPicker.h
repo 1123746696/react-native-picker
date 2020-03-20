@@ -24,6 +24,9 @@ typedef void(^backBolock)(NSDictionary * );
 
 @property(strong,nonatomic)NSArray *dataDry;//一进来的就没有数组和字典的区别肯定是一个字典
 
+@property (strong, nonatomic) NSMutableArray *provinceArray;//省、市
+@property (strong, nonatomic) NSMutableArray *cityArray;//市，县
+@property (strong, nonatomic) NSArray *townArray;//县，区
 
 
 @property(strong,nonatomic)NSArray *selectthreeAry;
@@ -38,12 +41,15 @@ typedef void(^backBolock)(NSDictionary * );
 @property(strong,nonatomic)NSString *rightStr;
 @property(strong,nonatomic)NSString *pickerToolBarFontSize;
 @property(strong,nonatomic)NSString *pickerFontSize;
-@property(strong,nonatomic)NSArray*pickerFontColor;
+@property(strong,nonatomic)NSString *pickerFontFamily;
+@property(strong,nonatomic)NSArray *pickerFontColor;
+@property(strong,nonatomic)NSString *pickerRowHeight;
 
 
 
 @property(assign,nonatomic)BOOL Correlation;//判断有没有没有关联
 
+@property(nonatomic,strong)NSString *numberCorrela;//关联是2行 还是3行
 
 @property(nonatomic,strong)NSArray *noCorreArry;
 
@@ -73,9 +79,8 @@ typedef void(^backBolock)(NSDictionary * );
 
 
 
-
 -(instancetype)initWithFrame:(CGRect)frame dic:(NSDictionary *)dic leftStr:(NSString *)leftStr centerStr:(NSString *)centerStr rightStr:(NSString *)rightStr topbgColor:(NSArray *)topbgColor bottombgColor:(NSArray *)bottombgColor leftbtnbgColor:(NSArray *)leftbtnbgColor rightbtnbgColor:(NSArray *)rightbtnbgColor centerbtnColor:(NSArray *)centerbtnColor selectValueArry:(NSArray *)selectValueArry  weightArry:(NSArray *)weightArry
-       pickerToolBarFontSize:(NSString *)pickerToolBarFontSize  pickerFontSize:(NSString *)pickerFontSize  pickerFontColor:(NSArray *)pickerFontColor;
+       pickerToolBarFontSize:(NSString *)pickerToolBarFontSize  pickerFontSize:(NSString *)pickerFontSize  pickerFontColor:(NSArray *)pickerFontColor  pickerRowHeight:(NSString *)pickerRowHeight  pickerFontFamily:(NSString *)pickerFontFamily;
 
 -(void)selectRow;
 @end
